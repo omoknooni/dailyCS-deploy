@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dailycs-frontend-app
+  namespace: argo
+spec:
+  project: dailycs
+  source:
+    repoURL: https://github.com/omoknooni/dailyCS-deploy.git
+    targetRevision: main
+    path: frontend
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dailycs

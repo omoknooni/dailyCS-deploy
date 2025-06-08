@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: dailycs
+  namespace: argo
+spec:
+  description: DailyCS
+  sourceRepos:
+  - "*"
+  destinations:
+  - namespace: dailycs
+    server: https://kubernetes.default.svc
+    name: in-cluster
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dailycs-root-app
+  namespace: argo
+spec:
+  project: dailycs
+  source:
+    repoURL: https://github.com/omoknooni/dailyCS-deploy.git
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dailycs
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
